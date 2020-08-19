@@ -12,5 +12,39 @@
     </head>
     <body>
       <h4>Check the console log!</h4>
+      <script>
+          function isPrime(n) {
+              for (let i = 2; i*i <= n; i++) {
+                  if (n % i == 0) {
+                      return false
+                  }
+              }
+              return true
+          }
+
+          console.log(isPrime(2))
+
+          function firstNPrimeJS(n) {
+              if (n < 1) {
+                console.log("N should be >= 1")
+              }
+
+              result = []
+              for (let i = 2; n > 0; i++) {
+                  if (isPrime(i)) {
+                    result.push(i)
+                    n -= 1
+                  }
+              }
+              return result.join(",")
+          }
+
+          function time_my_script(script) {
+                var start = new Date();
+                script();
+                console.log("Took: ",new Date() - start);
+                return
+            }
+      </script>
     </body>
 </html>  
