@@ -2,12 +2,20 @@
     <head>
         <meta charset="utf-8"/>
         <title>Golang WebAssembly</title>
-        <script src="wasm_exec.js"></script>
+        <script src="wasm_go_exec.js"></script>
+        <script src="wasm_c_exec.js"></script>
+
         <script>
             const go = new Go();
             WebAssembly.instantiateStreaming(fetch("json.wasm"), go.importObject).then((result) => {
                 go.run(result.instance);
             });
+
+            let firstNPrimeC;
+            Module.onRuntimeInitialized = async _ => {
+                firstNPrimeC = Module.cwrap('firstNPrimeC', null, ['number'])
+            }
+
         </script>
     </head>
     <body>
@@ -22,7 +30,6 @@
               return true
           }
 
-          console.log(isPrime(2))
 
           function firstNPrimeJS(n) {
               if (n < 1) {
@@ -36,13 +43,13 @@
                     n -= 1
                   }
               }
-              return result.join(",")
+              console.log(result.join(","))
           }
 
-          function time_my_script(script) {
-                var start = new Date();
+          function timer(script) {
+                var start = performance.now()
                 script();
-                console.log("Took: ",new Date() - start);
+                console.log("Took: ",performance.now() - start,"ms");
                 return
             }
       </script>
